@@ -4,7 +4,7 @@ import './css/Action.css'
 const gcdOverrides = new Set([
 	15997, //standard step
 	15998, //technical step
-	15999, 
+	15999,
 	16000,
 	16001,
 	16002, //step actions
@@ -26,34 +26,35 @@ const ogcdOverrides = new Set([
 	114 //bard MB
 ])
 
-export default function Action({ actionId, additionalClasses }) {
+export default function Action({ url, type, track, iconSize }) {
 	const [apiData, setApiData] = React.useState()
-	
-	React.useEffect(() => {
-		let current = true
-		void (async () => {
-			const data = await (
-				await fetch(`https://xivapi.com/Action/${actionId}`, { mode: 'cors' })
-			).json()
-			if (current) {
-				setApiData(data)
-			}
-		})()
 
-		return () => {
-			current = false
-		}
-	}, [actionId])
-	
-	if (apiData === undefined || !apiData.Icon) {
-		return null
-	}
-	
+	// React.useEffect(() => {
+	// 	let current = true
+	// 	void (async () => {
+	// 		const data = await (
+	// 			await fetch(`https://xivapi.com/Action/${actionId}`, { mode: 'cors' })
+	// 		).json()
+	// 		if (current) {
+	// 			setApiData(data)
+	// 		}
+	// 	})()
+
+	// 	return () => {
+	// 		current = false
+	// 	}
+	// }, [actionId])
+
+	// if (apiData === undefined || !apiData.Icon) {
+	// 	return null
+	// }
+
 	return (
 		<img
-			className={(gcdOverrides.has(actionId) || (!ogcdOverrides.has(actionId) && apiData.ActionCategory.ID !== 4)) ? `gcd ${additionalClasses}` : `ogcd ${additionalClasses}`}
-			src={`https://xivapi.com/${apiData.Icon}`}
-			alt={apiData.Name || ''}
+			style={{width: iconSize}}
+			className={`${track} action-move`}
+			src={url}
+			// alt={apiData.Name || ''}
 		/>
 	)
 }
